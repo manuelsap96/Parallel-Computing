@@ -13,7 +13,7 @@ using namespace std;
 const int num_threads = 8;
 
 
-vector<string> myReadFile(std::string fileName){
+vector<string> myReadFile(string fileName){
     ///function used to read the words from a text file
 
     ifstream inputFile(fileName);
@@ -64,29 +64,14 @@ void myWriteFile(string fileName, vector<string> nGrams){
     oFile.close();
 }
 
-void generateNgrams(int n, vector<string> strList,vector<string> *ngrams) {
-    ///function that generate n-grams from an list of words sequentially
-    ///for each word of dimension 'm' it sets the limit for the second for cicle and generate 'm - n + 1' n-grams.
-    int limit;
-    string word;
-    for (int j = 0; j<strList.size(); j++) {
-        word = strList[j];
-        limit = word.length() - n + 1;
-            for (int i = 0; i < limit; i++) {
-                ngrams->push_back(word.substr(i, n));
-            }
-    }
-
-}
 
 void compute(int thread_index, string word, int n, vector<string> *ngrams){
     ///auxiliary function that calculates n-grams of a word. Used for parallel OpenMP version.
+    //for each word of dimension 'm' it sets the limit for the second for cicle and generate 'm - n + 1' n-grams.
     int limit;
-    //vector<string> ngrams;
     if(!word.empty())
         limit = word.length() - n + 1;
         for(int i = 0; i < limit; i++){
-            //total_ngrams[thread_index].push_back(word.substr(i,n));
             ngrams[thread_index].push_back(word.substr(i,n));
         }
 
@@ -148,17 +133,10 @@ int main()
     vector<string> book = myReadFile("orgoglio_75kb.txt");
     int n = 3;
 
-    vector<string> ngrams1,ngrams2_to_print;
     vector<string> ngrams2[num_threads];//vector of vectors, used to make each thread write on its own vector avoiding conflicts.
+    vector<string> ngrams2_to_print;
 
     for (int i = 0; i<3; i++) {
-        start = clock();
-        generateNgrams(n, book, &ngrams1);
-        end = clock();
-        time1 = ((double) (end - start)) / CLOCKS_PER_SEC;
-        myWriteFile("ngrams1.txt", ngrams1);
-        cout << "Sequential program executed in " << time1 * 1000 << " ms" << endl;
-        ngrams1.clear();
 
         start = clock();
         generateNgramsParallel(n, book, ngrams2);

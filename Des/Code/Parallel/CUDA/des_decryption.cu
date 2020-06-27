@@ -121,15 +121,17 @@ int main(void) {
 	else
 		cout << "Error open file!" << endl;
 
+	//block and grid dimension
+	dim3 blockDim(block_size);
+	dim3 gridDim(host_list.size()/blockDim.x + 1);
+
 	 for(int i = 0; i<3; i++){
 		password_target=passwords_to_find[i];
 		for(int j = 0; j<3; j++){
 			//returns the size of vector host_list
 			std::cout << "Password list has size:  " << host_list.size() << std::endl;
 
-			//block and grid dimension
-			dim3 blockDim(block_size);
-			dim3 gridDim(host_list.size()/blockDim.x + 1);
+			
 
 			uint64_t u_salt = str2uint64(salt.c_str());
 			uint64_t pass = str2uint64(password_target.c_str());

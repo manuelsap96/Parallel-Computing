@@ -8,6 +8,8 @@
 
 
 char* findPassword(char* pass, char* salt) {
+    //this method is an all-in-one method for solving the problem
+    //it reads one file line by line compares the target password with each of those contained in the file
 
     clock_t start, stop;
     double time_elapsed = 0.0;

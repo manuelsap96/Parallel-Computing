@@ -104,6 +104,7 @@ void* compute(void* ind){
 }
 
 char* findPasswordPar() {
+    //responsible for initializing some variables useful for threads, for creating and starting threads
     clock_t start, stop;
     double time_elapsed = 0.0;
 

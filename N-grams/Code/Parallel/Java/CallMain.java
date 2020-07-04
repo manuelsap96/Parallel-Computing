@@ -87,9 +87,9 @@ public class CallMain implements Callable<List<String>> {
         List<Integer> result = new ArrayList<>();
         int pos;
         result.add(0);
-        int chunck = str.length() / numb_th;
+        int chunk = str.length() / numb_th;
         for (int k = 1; k < numb_th; k++ ) {
-            pos = chunck * k;
+            pos = chunk * k;
           // if the cut of the string happens in the middle of a word, go ahead to an empty character
             while (str.charAt(pos) != ' ') {
                 pos += 1;
